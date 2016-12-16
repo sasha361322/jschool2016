@@ -14,7 +14,7 @@
         <#list pairsForTest as pair>
             <tr>
                 <td>${pair.ruWord!}</td>
-                <td><input class="answer" id="input${pair_index}" type="text"></td>
+                <td><input required class="answer" id="input${pair_index}" type="text"></td>
                 <td>${pair.priority!}</td>
             </tr>
         </#list>

@@ -25,7 +25,7 @@ public class Parser {
     public static List <String> parseTextToWords(String text){
         String[] words = text.split(regex);//парсим слова по пробелам и другим возможным разделителям
         List<String> result = new ArrayList<String>();
-        for (String word : text.split(regex)){
+        for (String word : words){
             if (word.length() > 0)
                 result.add(word.toLowerCase());
         }

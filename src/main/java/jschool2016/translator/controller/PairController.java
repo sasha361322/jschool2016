@@ -71,7 +71,6 @@ public class PairController {
 
     @RequestMapping(value = "/add", method = POST)
     public String create(@ModelAttribute("pair") Pair pair, ModelMap modelMap) {
-        pair.setPriority(5);
         if (!modelMap.containsKey("idsOfAddedWords"))
             modelMap.addAttribute("idsOfAddedWords", new ArrayList<Long>());
         ArrayList<Long> ids = (ArrayList<Long>)modelMap.get("idsOfAddedWords");
@@ -151,7 +150,11 @@ public class PairController {
         List<String> answerList = Parser.getAnswerListFromJSON(answers);
         List<Pair> correctPairs = (ArrayList<Pair>)modelMap.get("pairsForTest");
         modelMap.remove("pairsForTest");
-        modelMap.addAttribute("answers", Teacher.getInCorrectAnswers(correctPairs, answerList));
+        List <Pair> incorrect = Teacher.getInCorrectAnswers(correctPairs, answerList);
+        modelMap.addAttribute("answers", incorrect);
+        modelMap.addAttribute("count", incorrect.size());
+        modelMap.addAttribute("all", correctPairs.size());
+        pairService.update(correctPairs);
         return "test/answers";
     }
 }

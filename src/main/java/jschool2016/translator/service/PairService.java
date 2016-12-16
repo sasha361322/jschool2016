@@ -32,6 +32,7 @@ public class PairService {
 
     @Transactional
     public Pair save(Pair pair){
+        pair.setPriority(5);
         return pairRepository.save(pair);
     }
 
@@ -89,5 +90,11 @@ public class PairService {
         List<Pair> res = new ArrayList<Pair>();
         res.addAll(Lists.newArrayList(pairRepository.findAll(new ArrayList(ids))));
         return res;
+    }
+
+    @Transactional
+    public void update (List<Pair> pairs){
+        for (Pair p : pairs)
+            pairRepository.save(p);
     }
 }

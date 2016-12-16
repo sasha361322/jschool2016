@@ -157,4 +157,11 @@ public class PairController {
         pairService.update(correctPairs);
         return "test/answers";
     }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
+    public String exceptionHandler(Exception e,
+                                   ModelMap modelMap) {
+        modelMap.addAttribute("error", e.getMessage());
+        return "error";
+    }
 }

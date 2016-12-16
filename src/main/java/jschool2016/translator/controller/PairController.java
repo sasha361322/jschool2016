@@ -4,6 +4,7 @@ import jschool2016.translator.dto.PairDTO;
 import jschool2016.translator.entity.Pair;
 import jschool2016.translator.service.PairService;
 import jschool2016.translator.service.Utils.Parser;
+import jschool2016.translator.service.Utils.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
@@ -119,7 +119,6 @@ public class PairController {
 
     @RequestMapping(value = "/choose", method = POST)
     public String choose(ModelMap modelMap,
-                         SessionStatus status,
                          @ModelAttribute("count") int count,
                          @ModelAttribute("from") String from) throws Exception {
         List<Pair> pairs = new ArrayList<Pair>();
@@ -132,7 +131,6 @@ public class PairController {
         }
         else {
             pairs.addAll(pairService.getRandomPairs(count));
-            status.setComplete();
         }
         modelMap.addAttribute("pairsForTest", pairs);
         return "test/test";
@@ -148,14 +146,12 @@ public class PairController {
     }
 
     @RequestMapping(value = "/checkTest", method = POST)
-    public String check(@ModelAttribute("pairs") String pairs,
-                        ModelMap modelMap,
-                        SessionStatus status) {
+    public String check(@ModelAttribute("answers") String answers,
+                        ModelMap modelMap) {
+        List<String> answerList = Parser.getAnswerListFromJSON(answers);
         List<Pair> correctPairs = (ArrayList<Pair>)modelMap.get("pairsForTest");
-        status.setComplete();
-        System.out.println(pairs);
         modelMap.remove("pairsForTest");
-        modelMap.addAttribute("pairs", pairs);
-        return "test/doTest";
+        modelMap.addAttribute("answers", Teacher.getInCorrectAnswers(correctPairs, answerList));
+        return "test/answers";
     }
 }

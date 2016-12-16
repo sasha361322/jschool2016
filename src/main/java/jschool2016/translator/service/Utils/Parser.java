@@ -46,5 +46,15 @@ public class Parser {
         return res;
     }
 
+    public static List<String> getAnswerListFromJSON(String json){
+        JsonElement jsonElement = new JsonParser().parse(json);
+        JsonArray jsonElements = jsonElement.getAsJsonArray();
+        List<String> answerList = new ArrayList<String>();
+        for (JsonElement e: jsonElements) {
+            String answer = e.getAsJsonObject().get("answer").getAsString();
+            answerList.add(answer);
+        }
+        return answerList;
+    }
     private static String regex = "[ ,.?!<>'\"-+$%^&*()]+";
 }

@@ -22,13 +22,22 @@
     </div>
     <form name="answers" role="form" action="/pair/checkTest" method="post">
         <input type="submit" value="Проверить!" onclick="beforeSubmit()">
-        <input name="answers" id="hiddenField" type="hidden">
+        <input name="answers" id="hiddenField" type="text" style="visibility: hidden">
     </form>
 </div>
 <script>
     function beforeSubmit() {
-        var ruList = document.getElementsByClassName("answer");
-        document.getElementById("hiddenField").value = ruList;
+        var answerList = document.getElementsByClassName("answer");
+
+        var answers = {
+            word: []
+        };
+        for (var i = 0; i < answerList.length; i++){
+            answers.word.push({
+                "answer" : answerList.item(i).value
+            });
+        }
+        document.getElementById("hiddenField").value = JSON.stringify(answers.word);
     }
 </script>
 <#include "/part/footer.ftl">
